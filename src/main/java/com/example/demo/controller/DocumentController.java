@@ -1,11 +1,11 @@
 package com.example.demo.controller;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Document;
@@ -18,19 +18,12 @@ public class DocumentController {
 	DocumentService documentService;
 	
 	@GetMapping("getData")
-	public List<String> getDocuments() {
-		return documentService.getAll()
-				.stream()
-				.map(x -> x.getDocumentName()).toList();
+	public List<Document> getDocuments() {
+		return documentService.getAll();
 	}
-	
-	
-	 public  String pdfByteArrayToHex(byte[] pdfByteArray) {
-	        StringBuilder result = new StringBuilder();
-	        for (byte b : pdfByteArray) {
-	            result.append(String.format("%02X", b));
-	        }
-	        return result.toString();
-	    }
-
+		@GetMapping("getData/{id}")
+		public Optional<Document> getDocumentsById(@PathVariable Long id) {
+			 Optional<Document> optionalDocument = documentService.getById(id);
+			 return optionalDocument;
+}
 }
